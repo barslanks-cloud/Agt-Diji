@@ -2,80 +2,136 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Panel</title>
 
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
 <style>
-body{font-family:Arial;background:#111827;color:white;padding:20px}
-input{padding:10px;width:100%;margin:5px 0}
-button{padding:10px;background:#3b82f6;border:none;color:white;border-radius:6px}
-.card{background:#1f2937;padding:10px;margin:10px 0;border-radius:8px}
+body{font-family:Arial;background:#f8fafc;margin:0}
+.container{max-width:1000px;margin:auto;padding:15px}
+.card{background:white;padding:15px;margin:10px 0;border-radius:12px}
+input,textarea{width:100%;padding:10px;margin:5px 0}
+button{background:#16a34a;color:white;border:none;padding:10px;border-radius:8px}
+.blue{background:#2563eb}
 </style>
 </head>
 <body>
 
+<div class="container">
+
 <h1>⚙ Admin Panel</h1>
 
-<!-- ÜRÜN EKLE -->
-<h2>Ürün Ekle</h2>
-<input id="pname" placeholder="Ürün adı">
+<!-- LOGIN -->
+<div id="loginBox" class="card">
+  <h3>Giriş</h3>
+  <input id="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Şifre">
+  <button onclick="login()">Giriş</button>
+</div>
+
+<!-- PANEL -->
+<div id="panel" style="display:none">
+
+<h2>🧠 Site İçeriği</h2>
+<div class="card">
+<input id="homeTitle" placeholder="Başlık">
+<textarea id="about" placeholder="Hakkında"></textarea>
+<textarea id="faq" placeholder="SSS"></textarea>
+<textarea id="contact" placeholder="İletişim"></textarea>
+<button onclick="saveContent()">Kaydet</button>
+</div>
+
+<h2>📦 Ürün Ekle</h2>
+<div class="card">
+<input id="pname" placeholder="Ürün">
 <input id="pprice" placeholder="Fiyat">
-<input id="pdesc" placeholder="Açıklama">
 <button onclick="addProduct()">Ekle</button>
+</div>
 
-<hr>
-
-<!-- SİPARİŞLER -->
-<h2>Siparişler</h2>
+<h2>📋 Siparişler</h2>
 <div id="orders"></div>
+
+</div>
+
+</div>
 
 <script>
 const firebaseConfig = {
   apiKey: "AIzaSyDiORFeKwko9d4YpXpj-qzfQ2-Pie5wuZI",
   authDomain: "online-a837e.firebaseapp.com",
   projectId: "online-a837e",
-  storageBucket: "online-a837e.firebasestorage.app",
-  messagingSenderId: "368141673909",
-  appId: "1:368141673909:web:952a28912f3d04078865fc",
-  measurementId: "G-STCBMJ0LH4"
 };
-
 firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
 const db = firebase.firestore();
 
-/* ÜRÜN EKLE */
+/* LOGIN */
+function login(){
+  auth.signInWithEmailAndPassword(email.value,password.value)
+  .then(()=>{
+    loginBox.style.display="none"
+    panel.style.display="block"
+    loadOrders()
+    loadContent()
+  })
+}
+
+/* SITE KAYDET */
+function saveContent(){
+  db.collection("siteContent").doc("main").set({
+    homeTitle:homeTitle.value,
+    about:about.value,
+    faq:faq.value,
+    contact:contact.value
+  })
+  alert("Kaydedildi")
+}
+
+/* ÜRÜN */
 function addProduct(){
   db.collection("products").add({
     name:pname.value,
-    price:pprice.value,
-    desc:pdesc.value
+    price:pprice.value
   })
-  alert("Ürün eklendi")
 }
 
-/* SİPARİŞLER */
-db.collection("orders").onSnapshot(snap=>{
-  let html=""
-  snap.forEach(doc=>{
-    let o=doc.data()
-    html+=`
-    <div class="card">
-      <b>${o.name}</b><br>
-      ${o.product}<br>
-      <b>Durum:</b> ${o.status}
-      <br><br>
-      <button onclick="update('${doc.id}','Hazırlanıyor')">Hazırla</button>
-      <button onclick="update('${doc.id}','Tamamlandı')">Tamamla</button>
-    </div>`
+/* SİPARİŞ */
+function loadOrders(){
+  db.collection("orders").onSnapshot(snap=>{
+    let html=""
+    snap.forEach(d=>{
+      let o=d.data()
+      html+=`
+      <div class="card">
+        <b>${o.name}</b><br>
+        ${o.product}<br>
+        ${o.status}<br>
+        <button onclick="update('${d.id}','Hazırlanıyor')">Hazırla</button>
+        <button onclick="update('${d.id}','Tamamlandı')" class="blue">Tamamla</button>
+      </div>`
+    })
+    orders.innerHTML=html
   })
-  orders.innerHTML=html
-})
+}
 
 function update(id,status){
-  db.collection("orders").doc(id).update({
-    status:status
+  db.collection("orders").doc(id).update({status})
+}
+
+/* LOAD CONTENT */
+function loadContent(){
+  db.collection("siteContent").doc("main").get()
+  .then(d=>{
+    let x=d.data()
+    if(!x) return
+    homeTitle.value=x.homeTitle
+    about.value=x.about
+    faq.value=x.faq
+    contact.value=x.contact
   })
 }
 </script>
