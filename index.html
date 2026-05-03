@@ -1,120 +1,280 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Site</title>
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agt Dijital - Online Sipariş</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .app-wrapper { height: 100%; display: flex; flex-direction: column; overflow: hidden; }
+        .main-content { flex: 1; overflow-y: auto; overflow-x: hidden; }
+        .nav-active { color: #2563eb; border-bottom: 3px solid #2563eb; }
+        .btn-primary { background: #2563eb; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; transition: 0.3s; }
+        .btn-primary:hover { background: #1d4ed8; }
+        .btn-secondary { background: #f3f4f6; color: #333; padding: 10px 20px; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; transition: 0.3s; }
+        .btn-secondary:hover { background: #e5e7eb; }
+        .product-card { border: 1px solid #e5e7eb; border-radius: 8px; padding: 15px; transition: 0.3s; }
+        .product-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; padding: 30px; border-radius: 12px; max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 500; color: #333; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
+        .form-group textarea { resize: vertical; min-height: 80px; }
+        .stars { color: #fbbf24; font-size: 14px; }
+        .loading { text-align: center; padding: 20px; }
+        .spinner { border: 3px solid #f3f4f6; border-top: 3px solid #2563eb; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .success-msg { background: #d1fae5; color: #065f46; padding: 12px; border-radius: 6px; margin-bottom: 15px; }
+        .error-msg { background: #fee2e2; color: #991b1b; padding: 12px; border-radius: 6px; margin-bottom: 15px; }
+    </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/element_sdk.js" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="app-wrapper"><!-- Header -->
+   <header class="bg-white border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 py-6">
+     <div>
+      <h1 class="text-3xl font-bold text-blue-600">🚀 Agt Dijital</h1>
+      <p class="text-sm text-gray-600">Dijital Ürünler Pazarı</p>
+     </div>
+    </div>
+   </header><!-- Main Content -->
+   <main class="main-content bg-white"><!-- Home Section -->
+    <section id="home-section" class="max-w-7xl mx-auto px-4 py-12">
+     <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold text-gray-800 mb-8">Dijital Ürünleri Keşfet</h2>
+      <p class="text-xl text-gray-600">Agt Dijital ile yüksek kaliteli dijital ürünleri hemen satın alabilirsiniz</p>
+     </div>
+     <div id="products-home" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12"></div>
+    </section><!-- Products Section -->
+    <section id="products-section" class="hidden max-w-7xl mx-auto px-4 py-12">
+     <h2 class="text-3xl font-bold text-gray-800 mb-8">Tüm Ürünler</h2>
+     <div id="products-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+    </section><!-- About Section -->
+    <section id="about-section" class="hidden max-w-7xl mx-auto px-4 py-12">
+     <h2 class="text-3xl font-bold text-gray-800 mb-8">Hakkında</h2>
+     <div class="bg-blue-50 p-8 rounded-lg">
+      <p class="text-gray-700 mb-4">Agt Dijital, yüksek kaliteli dijital ürünleri sunmak için kurulan bir platformdur.</p>
+      <p class="text-gray-700 mb-4">Müşteri memnuniyeti ve güvenliğini ön planda tutarak hizmet veriyoruz.</p>
+      <p class="text-gray-700">Dijital çağda en iyi ürünleri en uygun fiyatlarla size ulaştırmak misyonumuz.</p>
+     </div>
+    </section><!-- Contact Section -->
+    <section id="contact-section" class="hidden max-w-7xl mx-auto px-4 py-12">
+     <h2 class="text-3xl font-bold text-gray-800 mb-8">İletişim</h2>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-gray-50 p-6 rounded-lg text-center"><i data-lucide="mail" style="width: 40px; height: 40px; margin: 0 auto 10px; color: #2563eb;"></i>
+       <h3 class="font-bold mb-2">E-posta</h3>
+       <p class="text-gray-600">info@agtdijital.com</p>
+      </div>
+      <div class="bg-gray-50 p-6 rounded-lg text-center"><i data-lucide="phone" style="width: 40px; height: 40px; margin: 0 auto 10px; color: #2563eb;"></i>
+       <h3 class="font-bold mb-2">Telefon</h3>
+       <p class="text-gray-600">+90 (555) 123-4567</p>
+      </div>
+      <div class="bg-gray-50 p-6 rounded-lg text-center"><i data-lucide="map-pin" style="width: 40px; height: 40px; margin: 0 auto 10px; color: #2563eb;"></i>
+       <h3 class="font-bold mb-2">Adres</h3>
+       <p class="text-gray-600">İstanbul, Türkiye</p>
+      </div>
+     </div>
+    </section><!-- FAQ Section -->
+    <section id="faq-section" class="hidden max-w-7xl mx-auto px-4 py-12">
+     <h2 class="text-3xl font-bold text-gray-800 mb-8">Sıkça Sorulan Sorular</h2>
+     <div class="space-y-4">
+      <div class="bg-gray-50 p-6 rounded-lg">
+       <h3 class="font-bold mb-2">Ürünler nasıl teslim edilir?</h3>
+       <p class="text-gray-600">Dijital ürünler sipariş sonrası anında indirilmek üzere gönderilir.</p>
+      </div>
+      <div class="bg-gray-50 p-6 rounded-lg">
+       <h3 class="font-bold mb-2">Geri iade policy nedir?</h3>
+       <p class="text-gray-600">Dijital ürünler iade edilemez ancak sorun yaşarsanız destek almak için bizimle iletişime geçin.</p>
+      </div>
+      <div class="bg-gray-50 p-6 rounded-lg">
+       <h3 class="font-bold mb-2">Ödeme yöntemleri nelerdir?</h3>
+       <p class="text-gray-600">Tüm kredi kartları, banka transferi ve dijital cüzdan yöntemleri kabul ediyoruz.</p>
+      </div>
+     </div>
+    </section><!-- Reviews Section -->
+    <section id="reviews-section" class="hidden max-w-7xl mx-auto px-4 py-12">
+     <h2 class="text-3xl font-bold text-gray-800 mb-8">Müşteri Yorumları</h2>
+     <div id="reviews-list" class="space-y-4"></div>
+    </section>
+   </main><!-- Footer -->
+   <footer class="bg-gray-900 text-white mt-12">
+    <div class="max-w-7xl mx-auto px-4 py-8">
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+      <div>
+       <h3 class="font-bold mb-4">Agt Dijital</h3>
+       <p class="text-gray-400">Dijital ürünler için en güvenilir platformunuz.</p>
+      </div>
+      <div>
+       <h3 class="font-bold mb-4">Hızlı Linkler</h3>
+       <ul class="space-y-2 text-gray-400 text-sm">
+        <li><a href="#" class="hover:text-white">Gizlilik Politikası</a></li>
+        <li><a href="#" class="hover:text-white">Kullanım Şartları</a></li>
+        <li><a href="#" class="hover:text-white">İade Politikası</a></li>
+       </ul>
+      </div>
+      <div>
+       <h3 class="font-bold mb-4">Sosyal Medya</h3>
+       <div class="flex gap-4"><a href="#" class="hover:text-blue-400"><i data-lucide="facebook"></i></a> <a href="#" class="hover:text-blue-400"><i data-lucide="twitter"></i></a> <a href="#" class="hover:text-blue-400"><i data-lucide="instagram"></i></a>
+       </div>
+      </div>
+     </div>
+     <div class="border-t border-gray-800 pt-8 text-center text-gray-400 text-sm">
+      <p>© 2024 Agt Dijital. Tüm hakları saklıdır.</p>
+     </div>
+    </div>
+   </footer>
+  </div><!-- Order Modal -->
+  <div id="orderModal" class="modal">
+   <div class="modal-content">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+     <h2 class="text-2xl font-bold">Sipariş Ver</h2><button onclick="closeOrderModal()" style="background: none; border: none; font-size: 24px; cursor: pointer;">✕</button>
+    </div>
+    <div id="orderMessage"></div>
+    <form id="orderForm" onsubmit="submitOrder(event)"><!-- Ürün Bilgisi -->
+     <h3 class="font-bold mb-4 text-blue-600">Ürün Bilgisi</h3>
+     <div class="form-group"><label>Ürün Adı</label> <input type="text" id="productName" readonly style="background: #f3f4f6;">
+     </div>
+     <div class="form-group"><label>Fiyat</label> <input type="text" id="productPrice" readonly style="background: #f3f4f6;">
+     </div><!-- Kişisel Bilgiler -->
+     <h3 class="font-bold mb-4 mt-6 text-blue-600">Kişisel Bilgiler</h3>
+     <div class="form-group"><label>Ad Soyad *</label> <input type="text" id="fullName" required>
+     </div>
+     <div class="form-group"><label>E-posta *</label> <input type="email" id="email" required>
+     </div>
+     <div class="form-group"><label>Telefon *</label> <input type="tel" id="phone" required>
+     </div><!-- Fatura Bilgileri -->
+     <h3 class="font-bold mb-4 mt-6 text-blue-600">Fatura Bilgileri</h3>
+     <div class="form-group"><label>Şirket/Kurum (İsteğe Bağlı)</label> <input type="text" id="company">
+     </div>
+     <div class="form-group"><label>Vergi Numarası (İsteğe Bağlı)</label> <input type="text" id="taxNumber">
+     </div>
+     <div class="form-group"><label>Adres *</label> <textarea id="address" required></textarea>
+     </div>
+     <div class="form-group"><label>Şehir *</label> <input type="text" id="city" required>
+     </div>
+     <div class="form-group"><label>Posta Kodu *</label> <input type="text" id="zipCode" required>
+     </div><!-- Özel Notlar -->
+     <div class="form-group"><label>Özel Notlar</label> <textarea id="notes"></textarea>
+     </div><button type="submit" class="btn-primary w-full mt-6" style="width: 100%;">Siparişi Onayla</button>
+    </form>
+   </div>
+  </div>
+  <script>
+        let products = [];
+        let reviews = [];
+        let currentOrderProduct = null;
 
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+        const dataHandler = {
+            onDataChanged(data) {
+                products = data.filter(d => d.type === 'product');
+                reviews = data.filter(d => d.type === 'review');
+                renderProducts();
+                renderReviews();
+            }
+        };
 
-<style>
-body{margin:0;font-family:Arial;background:#f8fafc;color:#0f172a}
-header{background:white;padding:15px;position:sticky;top:0;box-shadow:0 2px 10px #0001}
-.container{max-width:1000px;margin:auto;padding:15px}
-.card{background:white;padding:15px;margin:10px 0;border-radius:12px}
-button{background:#2563eb;color:white;border:none;padding:10px;border-radius:8px}
-input,textarea{width:100%;padding:10px;margin:5px 0;border:1px solid #ddd;border-radius:8px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
-</style>
-</head>
-<body>
+        async function initApp() {
+            const result = await window.dataSdk.init(dataHandler);
+            if (!result.isOk) {
+                console.error('Failed to initialize Data SDK');
+            }
+            setupNavigation();
+            lucide.createIcons();
+        }
 
-<header>
-<h2 id="title">Yükleniyor...</h2>
-</header>
+        function setupNavigation() {
+            document.getElementById('home-section').classList.remove('hidden');
+        }
 
-<div class="container">
+        function renderProducts() {
+            const container = document.getElementById('products-home');
+            const html = products.map(p => `
+                <div class="product-card">
+                    <img src="${p.imageUrl}" alt="${p.name}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 6px; margin-bottom: 10px;">
+                    <h3 class="font-bold mb-2">${p.name}</h3>
+                    <p class="text-gray-600 text-sm mb-3">${p.description}</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span class="text-2xl font-bold text-blue-600">₺${p.price.toFixed(2)}</span>
+                        <button onclick="openOrderModal('${p.__backendId}')" class="btn-primary">Sipariş Ver</button>
+                    </div>
+                </div>
+            `).join('');
+            container.innerHTML = html;
+        }
 
-<h2>📦 Ürünler</h2>
-<div class="grid" id="products"></div>
+        function openOrderModal(productId) {
+            currentOrderProduct = products.find(p => p.__backendId === productId);
+            if (currentOrderProduct) {
+                document.getElementById('productName').value = currentOrderProduct.name;
+                document.getElementById('productPrice').value = '₺' + currentOrderProduct.price.toFixed(2);
+                document.getElementById('orderForm').reset();
+                document.getElementById('orderMessage').innerHTML = '';
+                document.getElementById('orderModal').classList.add('active');
+            }
+        }
 
-<h2>ℹ️ Hakkında</h2>
-<div class="card" id="about"></div>
+        function closeOrderModal() {
+            document.getElementById('orderModal').classList.remove('active');
+        }
 
-<h2>❓ SSS</h2>
-<div class="card" id="faq"></div>
+        async function submitOrder(e) {
+            e.preventDefault();
+            
+            const formData = {
+                type: 'order',
+                productId: currentOrderProduct.__backendId,
+                productName: currentOrderProduct.name,
+                productPrice: currentOrderProduct.price,
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                company: document.getElementById('company').value,
+                taxNumber: document.getElementById('taxNumber').value,
+                address: document.getElementById('address').value,
+                city: document.getElementById('city').value,
+                zipCode: document.getElementById('zipCode').value,
+                notes: document.getElementById('notes').value,
+                status: 'Beklemede',
+                orderDate: new Date().toISOString()
+            };
 
-<h2>📞 İletişim</h2>
-<div class="card" id="contact"></div>
+            const result = await window.dataSdk.create(formData);
+            if (result.isOk) {
+                document.getElementById('orderMessage').innerHTML = '<div class="success-msg">✓ Siparişiniz başarıyla alınmıştır! En kısa zamanda sizinle iletişime geçilecektir.</div>';
+                setTimeout(() => {
+                    closeOrderModal();
+                }, 2000);
+            } else {
+                document.getElementById('orderMessage').innerHTML = '<div class="error-msg">✗ Hata: ' + result.error.message + '</div>';
+            }
+        }
 
-<h2>🛒 Sipariş</h2>
-<div class="card">
-<input id="name" placeholder="Ad">
-<input id="phone" placeholder="Telefon">
-<input id="product" placeholder="Ürün">
-<button onclick="order()">Sipariş Ver</button>
-<p id="code"></p>
-</div>
+        function renderReviews() {
+            const container = document.getElementById('reviews-list');
+            
+            const html = reviews.map(r => `
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-bold">${r.customerName}</h4>
+                        <span class="text-yellow-400">${'⭐'.repeat(r.rating)}</span>
+                    </div>
+                    <p class="text-gray-700">${r.comment}</p>
+                </div>
+            `).join('');
 
-<h2>🔍 Sipariş Sorgula</h2>
-<div class="card">
-<input id="search" placeholder="Kod">
-<button onclick="check()">Sorgula</button>
-<p id="result"></p>
-</div>
+            container.innerHTML = html;
+        }
 
-</div>
-
-<script>
-const firebaseConfig = {
-  apiKey: "AIzaSyDiORFeKwko9d4YpXpj-qzfQ2-Pie5wuZI",
-  authDomain: "online-a837e.firebaseapp.com",
-  projectId: "online-a837e",
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-/* SİTE İÇERİKLERİ */
-function loadContent(){
-  db.collection("siteContent").doc("main").onSnapshot(doc=>{
-    let d=doc.data()
-    if(!d) return
-    title.innerText=d.homeTitle
-    about.innerText=d.about
-    faq.innerText=d.faq
-    contact.innerText=d.contact
-  })
-}
-
-/* ÜRÜNLER */
-db.collection("products").onSnapshot(snap=>{
-  let html=""
-  snap.forEach(d=>{
-    let p=d.data()
-    html+=`<div class="card"><b>${p.name}</b><br>${p.price} TL</div>`
-  })
-  products.innerHTML=html
-})
-
-/* SİPARİŞ */
-function order(){
-  let code="AGT"+Math.floor(Math.random()*99999)
-
-  db.collection("orders").add({
-    name:name.value,
-    phone:phone.value,
-    product:product.value,
-    status:"Beklemede",
-    code:code
-  })
-
-  code.innerText="Kod: "+code
-}
-
-/* SORGULA */
-function check(){
-  db.collection("orders").where("code","==",search.value).get()
-  .then(snap=>{
-    if(snap.empty) result.innerText="Bulunamadı"
-    else snap.forEach(d=>{
-      result.innerText="Durum: "+d.data().status
-    })
-  })
-}
-
-loadContent()
-</script>
-
-</body>
-</html>
+        initApp();
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9f60035cb793158e',t:'MTc3NzgxOTE0NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+  </html>
