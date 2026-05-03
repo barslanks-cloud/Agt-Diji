@@ -3,34 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel | Agt Dijital</title>
+    <title>Yönetim Paneli | Agt Dijital</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #6366f1; --bg: #f8fafc; --text: #1e293b; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); padding: 15px; color: var(--text); }
-        .container { max-width: 800px; margin: 0 auto; }
-        .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        :root { --primary: #6366f1; --bg: #f1f5f9; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); padding: 15px; color: #1e293b; }
+        .container { max-width: 850px; margin: 0 auto; }
+        .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #e2e8f0; }
         .tabs { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; }
-        .tab-btn { padding: 12px 20px; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; cursor: pointer; font-weight: 600; white-space: nowrap; }
+        .tab-btn { padding: 12px 20px; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; cursor: pointer; font-weight: 600; white-space: nowrap; transition: 0.3s; }
         .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
         .form-group { margin-bottom: 15px; }
-        label { display: block; font-size: 0.75rem; font-weight: 700; margin-bottom: 6px; color: #64748b; }
-        input, textarea, select { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 12px; font-family: inherit; }
-        .btn { padding: 12px 24px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; transition: 0.3s; width: 100%; margin-top: 10px; }
+        label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 5px; color: #64748b; }
+        input, textarea { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; font-family: inherit; font-size: 0.95rem; }
+        input:focus { outline: none; border-color: var(--primary); }
+        .btn { padding: 12px 24px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; width: 100%; margin-top: 10px; transition: 0.3s; }
         .btn-primary { background: var(--primary); color: white; }
-        .p-item { background: #f8fafc; padding: 15px; border-radius: 16px; margin-bottom: 15px; position: relative; border: 1px solid #e2e8f0; }
-        .p-remove { position: absolute; right: 10px; top: 10px; color: #ef4444; cursor: pointer; }
-        table { width: 100%; border-collapse: collapse; min-width: 600px; }
-        th { text-align: left; background: #f8fafc; padding: 10px; font-size: 0.75rem; }
-        td { padding: 10px; border-bottom: 1px solid #f1f5f9; font-size: 0.85rem; }
-        #login-ui { max-width: 400px; margin: 80px auto; }
-        #admin-ui { display: none; }
-        .order-detail { display: none; background: #f8fafc; }
+        .btn-primary:hover { filter: brightness(1.1); }
+        .p-item { background: #f8fafc; padding: 15px; border-radius: 15px; margin-bottom: 15px; position: relative; border: 1px solid #e2e8f0; }
+        .p-remove { position: absolute; right: 10px; top: 10px; color: #ef4444; cursor: pointer; font-size: 1.2rem; }
+        #admin-ui, #login-ui { display: none; }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; margin-top: 10px; }
+        th { text-align: left; background: #f1f5f9; padding: 12px; font-size: 0.8rem; color: #64748b; }
+        td { padding: 12px; border-bottom: 1px solid #f1f5f9; font-size: 0.85rem; }
+        .order-detail { display: none; background: #f8fafc; padding: 15px; border-radius: 10px; border: 1px solid #e2e8f0; }
     </style>
 </head>
 <body>
-    <div class="container" id="login-ui">
+    <div class="container" id="login-ui" style="max-width:400px; margin-top:100px">
         <div class="card">
             <h2 style="text-align:center; margin-bottom:20px">Yönetici Girişi</h2>
             <input type="email" id="email" placeholder="E-posta" style="margin-bottom:10px">
@@ -41,155 +42,120 @@
 
     <div class="container" id="admin-ui">
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('settings')">Ayarlar</button>
-            <button class="tab-btn" onclick="switchTab('products')">Ürünler</button>
-            <button class="tab-btn" onclick="switchTab('orders')">Siparişler (<span id="count">0</span>)</button>
+            <button class="tab-btn active" onclick="switchTab('settings')">Genel Ayarlar</button>
+            <button class="tab-btn" onclick="switchTab('products')">Ürün Yönetimi</button>
+            <button class="tab-btn" onclick="switchTab('orders')">Siparişler (<span id="ord-count">0</span>)</button>
         </div>
 
         <div id="tab-settings" class="tab-content">
             <div class="card">
-                <h2>Mağaza Ayarları</h2>
+                <h2>Mağaza Bilgileri</h2>
                 <div class="form-group"><label>Mağaza Adı</label><input type="text" id="m-name"></div>
-                <div class="form-group"><label>Slogan</label><input type="text" id="m-tagline"></div>
-                <button class="btn btn-primary" onclick="saveAll()">Kaydet</button>
+                <div class="form-group"><label>Slogan / Başlık</label><input type="text" id="m-tagline"></div>
+                <button class="btn btn-primary" onclick="save()">Ayarları Kaydet</button>
             </div>
         </div>
 
         <div id="tab-products" class="tab-content" style="display:none">
             <div class="card">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px">
-                    <h2>Ürün Yönetimi</h2>
-                    <button class="btn" style="background:#10b981; color:white; width:auto" onclick="addProductItem()">+ Yeni Ürün</button>
+                    <h2>Ürünler</h2>
+                    <button class="btn" style="background:#10b981; color:white; width:auto" onclick="addP()">+ Yeni Ürün</button>
                 </div>
-                <div id="p-container"></div>
-                <button class="btn btn-primary" onclick="saveAll()">Ürünleri Kaydet</button>
+                <div id="p-list"></div>
+                <button class="btn btn-primary" onclick="save()">Ürünleri Kaydet</button>
             </div>
         </div>
 
         <div id="tab-orders" class="tab-content" style="display:none">
             <div class="card" style="overflow-x:auto">
                 <h2>Gelen Siparişler</h2>
-                <table id="orders-table">
-                    <thead><tr><th>Müşteri</th><th>Tarih</th><th>Tutar</th><th>Durum</th><th></th></tr></thead>
-                    <tbody id="orders-body"></tbody>
+                <table id="o-table">
+                    <thead><tr><th>Müşteri</th><th>Tarih</th><th>Tutar</th><th>Detay</th></tr></thead>
+                    <tbody id="o-body"></tbody>
                 </table>
             </div>
         </div>
-
-        <button class="btn" style="background:#ef4444; color:white; margin-top:20px" onclick="logout()">Çıkış Yap</button>
+        <button class="btn" style="background:#64748b; color:white" onclick="logout()">Güvenli Çıkış</button>
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
-        const firebaseConfig = { apiKey: "AIzaSyDiORFeKwko9d4YpXpj-qzfQ2-Pie5wuZI", authDomain: "online-a837e.firebaseapp.com", projectId: "online-a837e", storageBucket: "online-a837e.firebasestorage.app", messagingSenderId: "368141673909", appId: "1:368141673909:web:952a28912f3d04078865fc", measurementId: "G-STCBMJ0LH4" };
+        const firebaseConfig = { apiKey: "AIzaSyDiORFeKwko9d4YpXpj-qzfQ2-Pie5wuZI", authDomain: "online-a837e.firebaseapp.com", projectId: "online-a837e", storageBucket: "online-a837e.firebasestorage.app", messagingSenderId: "368141673909", appId: "1:368141673909:web:952a28912f3d04078865fc" };
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        const appId = 'default-store';
+        const docPath = ['artifacts', 'default-store', 'public', 'data', 'settings', 'main'];
 
-        window.login = () => {
-            const e = document.getElementById('email').value;
-            const p = document.getElementById('pass').value;
-            signInWithEmailAndPassword(auth, e, p).catch(err => alert("Giriş Hatası!"));
-        };
-
+        window.login = () => signInWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('password' || 'pass').value).catch(e => alert("Giriş Hatası!"));
         window.logout = () => signOut(auth);
 
-        onAuthStateChanged(auth, user => {
-            document.getElementById('login-ui').style.display = user ? 'none' : 'block';
-            document.getElementById('admin-ui').style.display = user ? 'block' : 'none';
-            if(user) { fetchStore(); fetchOrders(); }
+        onAuthStateChanged(auth, u => {
+            document.getElementById('login-ui').style.display = u ? 'none' : 'block';
+            document.getElementById('admin-ui').style.display = u ? 'block' : 'none';
+            if(u) { fetchData(); listenOrders(); }
         });
 
         window.switchTab = (id) => {
             document.querySelectorAll('.tab-content').forEach(x => x.style.display = 'none');
             document.querySelectorAll('.tab-btn').forEach(x => x.classList.remove('active'));
             document.getElementById('tab-' + id).style.display = 'block';
-            event.target.classList.add('active');
+            event.currentTarget.classList.add('active');
         };
 
-        window.addProductItem = (t='', pr='', d='', im='') => {
-            const div = document.createElement('div');
-            div.className = 'p-item';
-            div.innerHTML = `<i class="fas fa-trash p-remove" onclick="this.parentElement.remove()"></i>
-                <div class="form-group"><label>Ürün Adı</label><input type="text" class="p-title" value="${t}"></div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px">
-                    <div class="form-group"><label>Fiyat</label><input type="number" class="p-price" value="${pr}"></div>
-                    <div class="form-group"><label>Görsel URL</label><input type="text" class="p-img" value="${im}"></div>
-                </div>
-                <div class="form-group"><label>Açıklama</label><input type="text" class="p-desc" value="${d}"></div>`;
-            document.getElementById('p-container').appendChild(div);
+        window.addP = (t='', pr='', d='', im='') => {
+            const div = document.createElement('div'); div.className = 'p-item';
+            div.innerHTML = `<i class="fas fa-trash-alt p-remove" onclick="this.parentElement.remove()"></i>
+                <label>Ürün Adı</label><input type="text" class="p-t" value="${t}">
+                <label>Fiyat (Sadece Rakam)</label><input type="number" class="p-p" value="${pr}">
+                <label>Görsel URL</label><input type="text" class="p-i" value="${im}">
+                <label>Açıklama</label><input type="text" class="p-d" value="${d}">`;
+            document.getElementById('p-list').appendChild(div);
         };
 
-        async function fetchStore() {
-            // 6 segmentli döküman yolu
-            const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', 'content', 'website'));
-            if(snap.exists()){
-                const d = snap.data();
+        async function fetchData() {
+            const s = await getDoc(doc(db, ...docPath));
+            if(s.exists()){
+                const d = s.data();
                 document.getElementById('m-name').value = d.name || '';
                 document.getElementById('m-tagline').value = d.tagline || '';
-                document.getElementById('p-container').innerHTML = '';
-                (d.products || []).forEach(p => addProductItem(p.title, p.price, p.desc, p.img));
+                document.getElementById('p-list').innerHTML = '';
+                (d.products || []).forEach(p => addP(p.title, p.price, p.desc, p.img));
             }
         }
 
-        window.saveAll = async () => {
+        window.save = async () => {
             const products = Array.from(document.querySelectorAll('.p-item')).map(el => ({
-                title: el.querySelector('.p-title').value,
-                price: parseFloat(el.querySelector('.p-price').value) || 0,
-                img: el.querySelector('.p-img').value,
-                desc: el.querySelector('.p-desc').value
+                title: el.querySelector('.p-t').value,
+                price: parseFloat(el.querySelector('.p-p').value) || 0,
+                img: el.querySelector('.p-i').value,
+                desc: el.querySelector('.p-d').value
             }));
-            const data = {
-                name: document.getElementById('m-name').value,
-                tagline: document.getElementById('m-tagline').value,
-                products: products
-            };
+            const data = { name: document.getElementById('m-name').value, tagline: document.getElementById('m-tagline').value, products: products, lastUpdate: new Date().toISOString() };
             try {
-                // 6 segmentli döküman yolu: artifacts / appId / public / data / content / website
-                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'content', 'website'), data);
-                alert("Kaydedildi!");
-            } catch(e) { alert("Kaydetme Hatası: " + e.message); }
+                await setDoc(doc(db, ...docPath), data);
+                alert("Başarıyla Kaydedildi!");
+            } catch(e) { alert("Hata: " + e.message); }
         };
 
-        function fetchOrders() {
-            const ordersRef = collection(db, 'artifacts', appId, 'public', 'data', 'orders');
-            onSnapshot(ordersRef, (snap) => {
-                const list = [];
-                snap.forEach(doc => list.push({id: doc.id, ...doc.data()}));
-                renderOrders(list);
+        function listenOrders() {
+            onSnapshot(collection(db, 'artifacts', 'default-store', 'public', 'data', 'orders'), s => {
+                const list = []; s.forEach(d => list.push({id: d.id, ...d.data()}));
+                document.getElementById('ord-count').innerText = list.length;
+                document.getElementById('o-body').innerHTML = list.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0)).map(o => `
+                    <tr><td><b>${o.customer?.name}</b></td><td>${o.createdAt?new Date(o.createdAt.seconds*1000).toLocaleString('tr-TR'):'Yeni'}</td><td>${o.total.toFixed(2)} TL</td><td><button onclick="toggleD('${o.id}')">İncele</button></td></tr>
+                    <tr id="row-${o.id}" class="order-detail"><td colspan="4">
+                        <b>Tel:</b> ${o.customer?.phone}<br><b>E-posta:</b> ${o.customer?.email}<br><b>Adres:</b> ${o.shipping?.address}<br><b>Ödeme:</b> ${o.payment}<br><hr style="margin:5px 0">
+                        ${o.items.map(i => `• ${i.title} (${i.qty} x ${i.price} TL)`).join('<br>')}
+                    </td></tr>
+                `).join('');
             });
         }
-
-        function renderOrders(orders) {
-            document.getElementById('count').innerText = orders.length;
-            const body = document.getElementById('orders-body');
-            orders.sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-            body.innerHTML = orders.map(o => {
-                const date = o.createdAt ? new Date(o.createdAt.seconds * 1000).toLocaleString('tr-TR') : '...';
-                return `
-                <tr>
-                    <td><b>${o.customer?.name}</b><br><small>${o.customer?.phone}</small></td>
-                    <td>${date}</td>
-                    <td><b>${o.total.toFixed(2)} TL</b></td>
-                    <td>${o.status}</td>
-                    <td><button onclick="toggleD('${o.id}')">Detay</button></td>
-                </tr>
-                <tr id="det-${o.id}" class="order-detail">
-                    <td colspan="5" style="background:#fff; padding:15px; border-radius:10px">
-                        <b>Adres:</b> ${o.shipping?.address}, ${o.shipping?.city}<br>
-                        <b>Ödeme:</b> ${o.payment}<br>
-                        <b>Ürünler:</b><br>${o.items.map(i => `• ${i.title} (${i.qty} x ${i.price} TL)`).join('<br>')}
-                    </td>
-                </tr>`;
-            }).join('');
-        }
-
         window.toggleD = (id) => {
-            const el = document.getElementById('det-' + id);
+            const el = document.getElementById('row-' + id);
             el.style.display = el.style.display === 'table-row' ? 'none' : 'table-row';
         };
     </script>
