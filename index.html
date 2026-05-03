@@ -10,69 +10,81 @@
         :root { --primary: #6366f1; --secondary: #a855f7; --bg: #0f172a; --text: #f1f5f9; --muted: #94a3b8; --card-bg: rgba(30, 41, 59, 0.7); }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
-        #loader { position: fixed; inset: 0; background: var(--bg); display: flex; justify-content: center; align-items: center; z-index: 9999; }
+        #loader { position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; }
         nav { position: sticky; top: 0; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(12px); z-index: 1000; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 1rem; }
-        .nav-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-        .cart-trigger { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 12px; font-weight: 700; cursor: pointer; position: relative; }
+        .nav-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .cart-trigger { background: var(--primary); color: white; border: none; padding: 10px 18px; border-radius: 12px; font-weight: 700; cursor: pointer; position: relative; }
         .cart-badge { position: absolute; top: -8px; right: -8px; background: #ef4444; font-size: 11px; padding: 2px 6px; border-radius: 20px; border: 2px solid var(--bg); }
         .hero { text-align: center; padding: 4rem 1rem; }
-        .hero h1 { font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 800; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero h1 { font-size: clamp(2.2rem, 8vw, 4rem); font-weight: 800; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
-        .p-card { background: var(--card-bg); border-radius: 24px; border: 1px solid rgba(255,255,255,0.05); overflow: hidden; transition: 0.3s; display: flex; flex-direction: column; }
-        .p-card:hover { transform: translateY(-5px); border-color: var(--primary); }
-        .p-img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+        .p-card { background: var(--card-bg); border-radius: 24px; border: 1px solid rgba(255,255,255,0.05); overflow: hidden; transition: 0.3s; display: flex; flex-direction: column; height: 100%; }
+        .p-img { width: 100%; aspect-ratio: 1; object-fit: cover; background: #1e293b; }
         .p-body { padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; }
         .p-price { font-size: 1.5rem; font-weight: 800; color: var(--primary); margin: 0.5rem 0 1.5rem; }
-        .add-btn { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 14px; font-weight: 700; cursor: pointer; margin-top: auto; }
+        .add-btn { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 14px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .add-btn:hover { filter: brightness(1.2); }
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2000; display: none; overflow-y: auto; padding: 1rem; }
-        .modal { background: #1e293b; width: 100%; max-width: 600px; margin: 2rem auto; border-radius: 28px; padding: 2.5rem; position: relative; }
-        .close { position: absolute; right: 20px; top: 20px; cursor: pointer; opacity: 0.5; }
-        .form-section { margin-bottom: 1.5rem; }
-        .form-section h3 { color: var(--primary); font-size: 1rem; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        input, select, textarea { width: 100%; padding: 12px; background: rgba(15,23,42,0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: white; font-family: inherit; margin-bottom: 10px; }
+        .modal { background: #1e293b; width: 100%; max-width: 600px; margin: 2rem auto; border-radius: 28px; padding: 2rem; position: relative; }
+        .close { position: absolute; right: 20px; top: 20px; cursor: pointer; opacity: 0.5; font-size: 1.5rem; }
+        input, select, textarea { width: 100%; padding: 12px; background: rgba(15,23,42,0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: white; margin-bottom: 10px; font-family: inherit; }
         .cart-item { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; }
         .cart-item img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
-        .final-btn { width: 100%; padding: 18px; background: #10b981; color: white; border: none; border-radius: 16px; font-weight: 800; cursor: pointer; }
-        footer { text-align: center; padding: 4rem 1rem; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 4rem; }
+        footer { text-align: center; padding: 4rem 1rem; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 4rem; font-size: 0.9rem; }
     </style>
 </head>
 <body>
-    <div id="loader"><i class="fas fa-circle-notch fa-spin fa-3x" style="color:var(--primary)"></i></div>
+    <div id="loader"><i class="fas fa-circle-notch fa-spin fa-3x" style="color:var(--primary)"></i><p style="margin-top:15px">Veriler Çekiliyor...</p></div>
+
     <nav><div class="nav-inner"><h2 id="s-logo" style="font-weight:800">MAĞAZA</h2><button class="cart-trigger" onclick="openC()"><i class="fas fa-shopping-cart"></i><span class="cart-badge" id="c-badge">0</span></button></div></nav>
-    <div class="hero"><h1 id="s-title">Koleksiyon</h1><p id="s-tagline">Hızlı ve güvenli alışveriş.</p></div>
+    <div class="hero"><h1 id="s-title">Mağazamıza Hoş Geldiniz</h1><p id="s-tagline">Kaliteli ve Güvenli Alışverişin Adresi</p></div>
     <div class="products-grid" id="p-list"></div>
 
     <div class="overlay" id="cart-ov"><div class="modal"><i class="fas fa-times close" onclick="closeC()"></i><h2>Sepetim</h2><div id="c-items" style="margin:20px 0"></div><div id="c-total" style="text-align:right; font-size:1.3rem; font-weight:800">Toplam: 0 TL</div><button class="add-btn" style="margin-top:20px" onclick="openCh()">Siparişi Tamamla</button></div></div>
 
-    <div class="overlay" id="ch-ov"><div class="modal"><i class="fas fa-times close" onclick="closeCh()"></i><h2>Sipariş Formu</h2><form id="order-f"><div class="form-section"><h3>İletişim</h3><input type="text" id="o-n" placeholder="Ad Soyad" required><input type="email" id="o-e" placeholder="E-posta" required><input type="tel" id="o-p" placeholder="Telefon" required></div><div class="form-section"><h3>Adres</h3><textarea id="o-a" placeholder="Adres" required></textarea><input type="text" id="o-c" placeholder="Şehir" required></div><div class="form-section"><h3>Ödeme</h3><select id="o-py"><option value="Kredi Kartı">Kredi Kartı</option><option value="Havale">Havale / EFT</option><option value="Kapıda Ödeme">Kapıda Ödeme</option></select></div><button type="submit" class="final-btn" id="s-btn">Siparişi Onayla</button></form></div></div>
+    <div class="overlay" id="ch-ov"><div class="modal"><i class="fas fa-times close" onclick="closeCh()"></i><h2>Sipariş Bilgileri</h2><form id="order-f"><input type="text" id="o-n" placeholder="Ad Soyad" required><input type="email" id="o-e" placeholder="E-posta" required><input type="tel" id="o-p" placeholder="Telefon (05xx)" required><textarea id="o-a" placeholder="Teslimat Adresi" rows="3" required></textarea><select id="o-py"><option value="Havale">Havale / EFT</option><option value="Kapıda Ödeme">Kapıda Ödeme</option><option value="Kredi Kartı">Kredi Kartı</option></select><button type="submit" class="add-btn" id="s-btn" style="background:#10b981">Siparişi Onayla</button></form></div></div>
 
-    <footer><p>&copy; 2024. Tüm Hakları Saklıdır.</p><div>Powered By <a href="https://www.agtdijital.com" target="_blank" style="color:var(--primary); font-weight:800; text-decoration:none">Agt Dijital</a></div></footer>
+    <footer><p id="s-copy">&copy; 2024 Tüm Hakları Saklıdır.</p><div>Powered By <a href="https://www.agtdijital.com" target="_blank" style="color:var(--primary); font-weight:800; text-decoration:none">Agt Dijital</a></div></footer>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, onSnapshot, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+        import { getFirestore, doc, onSnapshot, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
         const firebaseConfig = { apiKey: "AIzaSyDiORFeKwko9d4YpXpj-qzfQ2-Pie5wuZI", authDomain: "online-a837e.firebaseapp.com", projectId: "online-a837e", storageBucket: "online-a837e.firebasestorage.app", messagingSenderId: "368141673909", appId: "1:368141673909:web:952a28912f3d04078865fc", measurementId: "G-STCBMJ0LH4" };
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        
         let cart = [], siteData = {};
+        const path = ['artifacts', 'default-store', 'public', 'data', 'settings', 'main'];
 
         async function init() {
-            await signInAnonymously(auth);
-            // 6 segmentli yol: artifacts / default-store / public / data / content / website
-            onSnapshot(doc(db, 'artifacts', 'default-store', 'public', 'data', 'content', 'website'), s => {
-                if(s.exists()){ siteData = s.data(); render(); }
-                document.getElementById('loader').style.display = 'none';
-            });
+            try {
+                await signInAnonymously(auth);
+                onSnapshot(doc(db, ...path), s => {
+                    if(s.exists()){ 
+                        siteData = s.data(); 
+                        render(); 
+                    } else {
+                        document.getElementById('s-title').innerText = "Mağaza Yayında Değil";
+                    }
+                    document.getElementById('loader').style.display = 'none';
+                }, (err) => {
+                    console.error("Firestore error:", err);
+                    document.getElementById('loader').innerHTML = "<p>Veri çekme hatası! Lütfen Firebase kurallarını kontrol edin.</p>";
+                });
+            } catch (e) { console.error("Auth error:", e); }
         }
 
         function render() {
             document.getElementById('s-logo').innerText = siteData.name || "MAĞAZA";
-            document.getElementById('s-title').innerText = siteData.tagline || "Hoş Geldiniz";
+            document.getElementById('s-title').innerText = siteData.name || "Yeni Koleksiyon";
+            document.getElementById('s-tagline').innerText = siteData.tagline || "Kaliteli Ürünler";
+            document.getElementById('s-copy').innerText = `© ${new Date().getFullYear()} ${siteData.name || 'Mağaza'}. Tüm Hakları Saklıdır.`;
+            
             document.getElementById('p-list').innerHTML = (siteData.products || []).map((p, i) => `
-                <div class="p-card"><img src="${p.img || 'https://via.placeholder.com/300'}" class="p-img"><div class="p-body"><h3>${p.title}</h3><p style="color:var(--muted); font-size:0.8rem">${p.desc}</p><div class="p-price">${p.price} TL</div><button class="add-btn" onclick="add(${i})">Sepete Ekle</button></div></div>
+                <div class="p-card"><img src="${p.img || 'https://via.placeholder.com/300'}" class="p-img"><div class="p-body"><h3>${p.title}</h3><p style="color:var(--muted); font-size:0.8rem; margin-bottom:10px">${p.desc}</p><div class="p-price">${p.price} TL</div><button class="add-btn" onclick="add(${i})">Sepete Ekle</button></div></div>
             `).join('');
         }
 
@@ -96,26 +108,25 @@
         window.ch = (i, d) => { cart[i].qty += d; if(cart[i].qty < 1) cart.splice(i, 1); up(); };
         window.openC = () => document.getElementById('cart-ov').style.display = 'block';
         window.closeC = () => document.getElementById('cart-ov').style.display = 'none';
-        window.openCh = () => { if(!cart.length) return alert("Sepet boş!"); closeC(); document.getElementById('ch-ov').style.display = 'block'; };
+        window.openCh = () => { if(!cart.length) return alert("Sepetiniz boş!"); closeC(); document.getElementById('ch-ov').style.display = 'block'; };
         window.closeCh = () => document.getElementById('ch-ov').style.display = 'none';
 
         document.getElementById('order-f').onsubmit = async (e) => {
             e.preventDefault();
             const btn = document.getElementById('s-btn');
-            btn.disabled = true; btn.innerText = "Gönderiliyor...";
+            btn.disabled = true; btn.innerText = "Sipariş Gönderiliyor...";
             const data = {
                 customer: { name: document.getElementById('o-n').value, email: document.getElementById('o-e').value, phone: document.getElementById('o-p').value },
-                shipping: { address: document.getElementById('o-a').value, city: document.getElementById('o-c').value },
+                shipping: { address: document.getElementById('o-a').value },
                 payment: document.getElementById('o-py').value,
                 items: cart,
                 total: cart.reduce((a, b) => a + (b.price * b.qty), 0),
                 status: 'Yeni', createdAt: serverTimestamp()
             };
             try {
-                // Koleksiyon yolu 5 segmentli (artifacts / default-store / public / data / orders)
                 await addDoc(collection(db, 'artifacts', 'default-store', 'public', 'data', 'orders'), data);
-                alert("Sipariş alındı!"); cart = []; up(); closeCh(); document.getElementById('order-f').reset();
-            } catch(e) { alert("Sipariş Hatası!"); } finally { btn.disabled = false; btn.innerText = "Siparişi Onayla"; }
+                alert("Siparişiniz başarıyla alındı!"); cart = []; up(); closeCh(); document.getElementById('order-f').reset();
+            } catch(e) { alert("Sipariş hatası! Lütfen tekrar deneyin."); } finally { btn.disabled = false; btn.innerText = "Siparişi Onayla"; }
         };
         init();
     </script>
